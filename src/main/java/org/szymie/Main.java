@@ -64,12 +64,14 @@ public class Main {
             long lastRoEndTime = ro ? result.startTime + result.elapsed : acc.lastRoEndTime;
             long lastRwEndTime = rw ? result.startTime + result.elapsed : acc.lastRwEndTime;
 
-            return new Result(acc.n + result.n, acc.numberOfReads + result.numberOfReads,
+            return acc.newResult(acc.n + result.n, acc.numberOfReads + result.numberOfReads,
                     acc.numberOfMultiValueReads + result.numberOfMultiValueReads, acc.totalMultiValueReadSize + result.totalMultiValueReadSize,
                     acc.abort + result.abort, acc.numberOfAttempts + result.numberOfAttempts, acc.readMultiValue + result.readMultiValue,
                     acc.roCount + result.roCount, acc.rwCount + result.rwCount, 0, 0, firstRoStartTime, firstRwStartTime, lastRoEndTime, lastRwEndTime,
-                    acc.roTotalElapsed + (ro ? result.elapsed : 0), acc.rwTotalElapsed + (rw ? result.elapsed : 0));
+                    acc.roTotalElapsed + (ro ? result.elapsed : 0), acc.rwTotalElapsed + (rw ? result.elapsed : 0), result.elapsed, result.elapsed);
         });
+
+        lines.close();
 
         double abortRate = resultAcc.abort / (double) resultAcc.n;
         double multiValueReadsRate = resultAcc.numberOfMultiValueReads / (double) resultAcc.numberOfReads;
@@ -110,7 +112,9 @@ public class Main {
                 "Avg. response time: " + avgResponseTime + " ms",
                 "RO Std. Dev. response time: " + stdDevResult.roValue + " ms",
                 "RW Std. Dev. response time: " + stdDevResult.rwValue + " ms",
-                "Std. Dev. response time: " + stdDevResult.value + " ms"
+                "Std. Dev. response time: " + stdDevResult.value + " ms",
+                "Max. response time: " + resultAcc.maxResponseTime + " ms",
+                "Min. response time: " + resultAcc.minResponseTime + " ms"
         );
 
         results.forEach(System.err::println);
@@ -159,6 +163,8 @@ public class Main {
         double roStdDev = Math.sqrt(resultAcc.roValue / roCount);
         double rwStdDev = Math.sqrt(resultAcc.rwValue / rwCount);
         double totalStdDev = Math.sqrt(resultAcc.value / totalCount);
+
+        lines.close();
 
         return new StdDevResult(roStdDev, rwStdDev, totalStdDev);
     }
