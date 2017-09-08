@@ -6,6 +6,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,6 +92,8 @@ public class Main {
         double avgRwResponseTime = resultAcc.rwCount > 0 ? resultAcc.rwTotalElapsed / resultAcc.rwCount : 0;
         double avgResponseTime = (resultAcc.roTotalElapsed + resultAcc.rwTotalElapsed) / (resultAcc.roCount + resultAcc.rwCount);
 
+        StdDevResult stdDevResult = calculateStdDevResults(inputFileName, resultAcc.roCount, avgRoResponseTime, resultAcc.rwCount, avgRwResponseTime, resultAcc.roCount + resultAcc.rwCount, avgResponseTime);
+
         List<String> results = Arrays.asList(
                 "Number of transactions: " + resultAcc.n,
                 "Number of attempts: " + resultAcc.numberOfAttempts,
@@ -104,7 +107,10 @@ public class Main {
                 "Throughout: " + throughput * 1000 + "/sec",
                 "Avg. RO response time: " + avgRoResponseTime + " ms",
                 "Avg. RW response time: " + avgRwResponseTime + " ms",
-                "Avg. response time: " + avgResponseTime + " ms"
+                "Avg. response time: " + avgResponseTime + " ms",
+                "RO Std. Dev. response time: " + stdDevResult.roValue + " ms",
+                "RW Std. Dev. response time: " + stdDevResult.rwValue + " ms",
+                "Std. Dev. response time: " + stdDevResult.value + " ms"
         );
 
         results.forEach(System.err::println);
@@ -112,5 +118,48 @@ public class Main {
         if(!outputFileName.isEmpty()) {
             Files.write(Paths.get(outputFileName), results, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         }
+    }
+
+    private static StdDevResult calculateStdDevResults(String inputFileName, long roCount, double roAvg, long rwCount, double rwAvg, long totalCount, double avg) throws IOException {
+
+        Stream<String> lines = Files.lines(Paths.get(inputFileName));
+
+        StdDevResult resultAcc = lines.skip(1).map(line -> {
+
+            String[] splitLine = line.split(",");
+
+            Map<String, String> map = new HashMap<>();
+
+            map.put("elapsed", splitLine[1]);
+            map.put("label", splitLine[2]);
+
+            return map;
+        }).map(resultMap -> {
+
+            boolean ro = resultMap.get("label").startsWith("RO");
+
+            long elapsed = Long.parseLong(resultMap.get("elapsed"));
+
+            double roValue = 0;
+            double rwValue = 0;
+
+            if (ro) {
+                roValue = Math.pow(elapsed - roAvg, 2);
+            } else {
+                rwValue = Math.pow(elapsed - rwAvg, 2);
+            }
+
+            double value = Math.pow(elapsed - avg, 2);
+
+            return new StdDevResult(roValue, rwValue, value);
+        }).reduce(new StdDevResult(0, 0, 0), (acc, result) ->
+                new StdDevResult(acc.roValue + result.roValue, acc.rwValue + result.rwValue, acc.value + result.value)
+        );
+
+        double roStdDev = Math.sqrt(resultAcc.roValue / roCount);
+        double rwStdDev = Math.sqrt(resultAcc.rwValue / rwCount);
+        double totalStdDev = Math.sqrt(resultAcc.value / totalCount);
+
+        return new StdDevResult(roStdDev, rwStdDev, totalStdDev);
     }
 }
