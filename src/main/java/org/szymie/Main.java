@@ -68,7 +68,8 @@ public class Main {
                     acc.numberOfMultiValueReads + result.numberOfMultiValueReads, acc.totalMultiValueReadSize + result.totalMultiValueReadSize,
                     acc.abort + result.abort, acc.numberOfAttempts + result.numberOfAttempts, acc.readMultiValue + result.readMultiValue,
                     acc.roCount + result.roCount, acc.rwCount + result.rwCount, 0, 0, firstRoStartTime, firstRwStartTime, lastRoEndTime, lastRwEndTime,
-                    acc.roTotalElapsed + (ro ? result.elapsed : 0), acc.rwTotalElapsed + (rw ? result.elapsed : 0), result.elapsed, result.elapsed);
+                    acc.roTotalElapsed + (ro ? result.elapsed : 0), acc.rwTotalElapsed + (rw ? result.elapsed : 0), ro ? result.elapsed : Long.MAX_VALUE, ro ? result.elapsed : Long.MIN_VALUE,
+                    rw ? result.elapsed : Long.MAX_VALUE, rw ? result.elapsed : Long.MIN_VALUE);
         });
 
         lines.close();
@@ -113,8 +114,10 @@ public class Main {
                 "RO Std. Dev. response time: " + stdDevResult.roValue + " ms",
                 "RW Std. Dev. response time: " + stdDevResult.rwValue + " ms",
                 "Std. Dev. response time: " + stdDevResult.value + " ms",
-                "Max. response time: " + resultAcc.maxResponseTime + " ms",
-                "Min. response time: " + resultAcc.minResponseTime + " ms"
+                "RO min. response time: " + resultAcc.minRoResponseTime + " ms",
+                "RO max. response time: " + resultAcc.maxRoResponseTime + " ms",
+                "RW min. response time: " + resultAcc.minRwResponseTime + " ms",
+                "RW max. response time: " + resultAcc.maxRwResponseTime + " ms"
         );
 
         results.forEach(System.err::println);
