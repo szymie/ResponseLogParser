@@ -100,24 +100,25 @@ public class Main {
         List<String> results = Arrays.asList(
                 "Number of transactions: " + resultAcc.n,
                 "Number of attempts: " + resultAcc.numberOfAttempts,
-                "Transactions/attempts rate: " + resultAcc.n / (double) resultAcc.numberOfAttempts * 100 + "%",
-                "Abort rate: " + abortRate * 100 + "%",
+                "Transactions/attempts rate: " + String.format("%.2f", resultAcc.n / (double) resultAcc.numberOfAttempts * 100) + "%",
+                "Abort rate: " + String.format("%.2f", abortRate * 100) + "%",
+                "Abort rate 2: " + String.format("%.2f",((resultAcc.numberOfAttempts - resultAcc.n) / (double) (resultAcc.n + (resultAcc.numberOfAttempts - resultAcc.n))) * 100) + "%",
                 "Multi value reads rate: " + multiValueReadsRate * 100 + "%",
                 "Transaction read multi value rate: " + readMultiValueRate * 100 + "%",
                 "Avg. multi value read size: " + avgMultiValueReadSize,
-                "RO throughout: " + roThroughput * 1000 + "/sec",
-                "RW throughout: " + rwThroughput * 1000 + "/sec",
-                "Throughout: " + throughput * 1000 + "/sec",
+                "RO throughout: " + String.format("%.2f", roThroughput * 1000) + "/sec",
+                "RW throughout: " + String.format("%.2f", rwThroughput * 1000) + "/sec",
+                "Throughout: " + String.format("%.2f", throughput * 1000) + "/sec",
                 "Avg. RO response time: " + avgRoResponseTime + " ms",
                 "Avg. RW response time: " + avgRwResponseTime + " ms",
                 "Avg. response time: " + avgResponseTime + " ms",
-                "RO Std. Dev. response time: " + stdDevResult.roValue + " ms",
-                "RW Std. Dev. response time: " + stdDevResult.rwValue + " ms",
-                "Std. Dev. response time: " + stdDevResult.value + " ms",
-                "RO min. response time: " + resultAcc.minRoResponseTime + " ms",
-                "RO max. response time: " + resultAcc.maxRoResponseTime + " ms",
-                "RW min. response time: " + resultAcc.minRwResponseTime + " ms",
-                "RW max. response time: " + resultAcc.maxRwResponseTime + " ms"
+                "RO Std. Dev. response time: " + String.format("%.2f", stdDevResult.roValue) + " ms",
+                "RW Std. Dev. response time: " + String.format("%.2f", stdDevResult.rwValue) + " ms",
+                "Std. Dev. response time: " + String.format("%.2f", stdDevResult.value) + " ms",
+                "RO min. response time: " + (resultAcc.minRoResponseTime != Long.MAX_VALUE ? resultAcc.minRoResponseTime : 0) + " ms",
+                "RO max. response time: " + (resultAcc.maxRoResponseTime != Long.MIN_VALUE ? resultAcc.maxRoResponseTime : 0) + " ms",
+                "RW min. response time: " + (resultAcc.minRwResponseTime != Long.MAX_VALUE ? resultAcc.minRwResponseTime : 0) + " ms",
+                "RW max. response time: " + (resultAcc.maxRwResponseTime != Long.MIN_VALUE ? resultAcc.maxRoResponseTime : 0) + " ms"
         );
 
         results.forEach(System.err::println);
@@ -163,8 +164,8 @@ public class Main {
                 new StdDevResult(acc.roValue + result.roValue, acc.rwValue + result.rwValue, acc.value + result.value)
         );
 
-        double roStdDev = Math.sqrt(resultAcc.roValue / roCount);
-        double rwStdDev = Math.sqrt(resultAcc.rwValue / rwCount);
+        double roStdDev = roCount > 0 ? Math.sqrt(resultAcc.roValue / roCount) : 0;
+        double rwStdDev = rwCount > 0 ? Math.sqrt(resultAcc.rwValue / rwCount): 0;
         double totalStdDev = Math.sqrt(resultAcc.value / totalCount);
 
         lines.close();
