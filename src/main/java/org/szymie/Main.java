@@ -100,6 +100,8 @@ public class Main {
         List<String> results = Arrays.asList(
                 "Number of transactions: " + resultAcc.n,
                 "Number of attempts: " + resultAcc.numberOfAttempts,
+                "Number of RO transactions: " + resultAcc.roCount,
+                "Number of RW transactions: " + resultAcc.rwCount,
                 "Transactions/attempts rate: " + String.format("%.2f", resultAcc.n / (double) resultAcc.numberOfAttempts * 100) + "%",
                 "Abort rate: " + String.format("%.2f", abortRate * 100) + "%",
                 "Abort rate 2: " + String.format("%.2f",((resultAcc.numberOfAttempts - resultAcc.n) / (double) (resultAcc.n + (resultAcc.numberOfAttempts - resultAcc.n))) * 100) + "%",
