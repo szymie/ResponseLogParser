@@ -1,0 +1,23 @@
+Number of transactions: 1063276
+Number of attempts: 1063276
+Number of RO transactions: 531638
+Number of RW transactions: 531638
+Transactions/attempts rate: 100,00%
+Abort rate: 0,00%
+Abort rate 2: 0,00%
+Multi value reads rate: 0.2091044228269182%
+Transaction read multi value rate: 2.9274619195768548%
+Avg. multi value read size: 2.258682173033058
+RO throughout: 2209,27/sec
+RW throughout: 2212,24/sec
+Throughout: 4417,19/sec
+Avg. RO response time: 13.0 ms
+Avg. RW response time: 26.0 ms
+Avg. response time: 20.0 ms
+RO Std. Dev. response time: 10,69 ms
+RW Std. Dev. response time: 9,34 ms
+Std. Dev. response time: 12,02 ms
+RO min. response time: 1 ms
+RO max. response time: 381 ms
+RW min. response time: 6 ms
+RW max. response time: 381 ms
