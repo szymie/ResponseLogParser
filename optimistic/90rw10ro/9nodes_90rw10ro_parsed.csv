@@ -1,10 +1,10 @@
 Number of transactions: 466222
-Number of attempts: 833010
+Number of attempts: 885008
 Number of RO transactions: 46622
 Number of RW transactions: 419600
-Transactions/attempts rate: 55,97%
+Transactions/attempts rate: 52,68%
 Abort rate: 21,17%
-Abort rate 2: 44,03%
+Abort rate 2: 47,32%
 Multi value reads rate: 0.0%
 Transaction read multi value rate: 0.0%
 Avg. multi value read size: 0.0

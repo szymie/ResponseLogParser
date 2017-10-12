@@ -5,9 +5,9 @@ Number of RW transactions: 998874
 Transactions/attempts rate: 100,00%
 Abort rate: 0,00%
 Abort rate 2: 0,00%
-Multi value reads rate: 0.43597351487339964%
+Multi value reads rate: 0.73597351487339964%
 Transaction read multi value rate: 4.010956336835276%
-Avg. multi value read size: 3.69765926857759
+Avg. multi value read size: 3.99765926857759
 RO throughout: 462,19/sec
 RW throughout: 4148,44/sec
 Throughout: 4609,38/sec

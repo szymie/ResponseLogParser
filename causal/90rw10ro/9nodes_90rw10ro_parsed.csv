@@ -7,7 +7,7 @@ Abort rate: 0,00%
 Abort rate 2: 0,00%
 Multi value reads rate: 2.846922985892225%
 Transaction read multi value rate: 22.69567605282891%
-Avg. multi value read size: 5.1608619979355
+Avg. multi value read size: 5.2608619979355
 RO throughout: 686,24/sec
 RW throughout: 6138,65/sec
 Throughout: 6820,73/sec

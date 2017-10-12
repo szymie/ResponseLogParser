@@ -8,9 +8,9 @@ Abort rate 2: 9,64%
 Multi value reads rate: 0.0%
 Transaction read multi value rate: 0.0%
 Avg. multi value read size: 0.0
-RO throughout: 6336,35/sec
-RW throughout: 705,26/sec
-Throughout: 7037,74/sec
+RO throughout: 6426,35/sec
+RW throughout: 715,26/sec
+Throughout: 7137,74/sec
 Avg. RO response time: 12.0 ms
 Avg. RW response time: 267.0 ms
 Avg. response time: 37.0 ms
